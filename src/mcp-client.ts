@@ -1,5 +1,5 @@
-const MCP_URL = "https://narzedzia.kurant.net.pl/mcp";
-const MCP_TOKEN = "04657be5edc4009d1433b80656be87a1c1a99866c1b3d1c50c0d22e5431d94ce";
+const MCP_URL = process.env.MCP_UPSTREAM_URL ?? "https://narzedzia.kurant.net.pl/mcp";
+const MCP_TOKEN = process.env.MCP_UPSTREAM_TOKEN ?? "04657be5edc4009d1433b80656be87a1c1a99866c1b3d1c50c0d22e5431d94ce";
 
 let sessionId: string | null = null;
 let reqId = 0;
