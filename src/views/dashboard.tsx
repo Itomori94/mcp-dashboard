@@ -19,19 +19,22 @@ export default function Dashboard() {
   const vms = Array.isArray(containers) ? containers : [];
   const running = vms.filter((v: any) => v.status === "running").length;
 
+  // resources: { cpu_usage: "6.8%", ram_used_gb, ram_total_gb, disk_used_gb, disk_total_gb }
   const res: any = resources || {};
-  const cpuPct = Math.round((res.cpu ?? 0) * 100);
-  const ramPct = pct(res.memory?.used ?? 0, res.memory?.total ?? 1);
-  const diskPct = pct(res.disk?.used ?? 0, res.disk?.total ?? 1);
+  const cpuPct = parseFloat(String(res.cpu_usage ?? "0"));
+  const ramPct = pct(res.ram_used_gb ?? 0, res.ram_total_gb ?? 1);
+  const diskPct = pct(res.disk_used_gb ?? 0, res.disk_total_gb ?? 1);
 
   const haOk = !(haStatus as any)?.error;
 
+  // emails: array of { id, From, Subject, Date }
   const todayEmails = Array.isArray(emails) ? emails : [];
 
   const bal: any = balance || {};
-  const netWorth = bal.net_worth ?? bal.netWorth ?? bal.total ?? "–";
+  const netWorth = bal.net_worth ?? bal.netWorth ?? bal.total ?? null;
+  const balanceError = !!(bal as any)?.error || String(bal).includes("502");
 
-  const backupOk = !(backups as any)?.error && (backups as any)?.all_fresh !== false;
+  const backupOk = (backups as any)?.ok === true;
 
   const recentDocs = Array.isArray(docs) ? docs : [];
   const todoTasks = Array.isArray(tasks) ? tasks : [];
@@ -91,8 +94,8 @@ export default function Dashboard() {
           ) : (
             todayEmails.slice(0, 4).map((m: any, i: number) => (
               <div key={i} className="row">
-                <span className="truncate" style={{ maxWidth: 200 }}>{m.subject ?? "(brak tematu)"}</span>
-                <span className="text-muted text-xs" style={{ marginLeft: "auto", whiteSpace: "nowrap" }}>{m.from?.split("<")[0].trim()}</span>
+                <span className="truncate" style={{ maxWidth: 200 }}>{m.Subject ?? m.subject ?? "(brak tematu)"}</span>
+                <span className="text-muted text-xs" style={{ marginLeft: "auto", whiteSpace: "nowrap" }}>{(m.From ?? m.from ?? "").replace(/<[^>]+>/, "").trim()}</span>
               </div>
             ))
           )}
@@ -106,10 +109,18 @@ export default function Dashboard() {
         {/* Finance */}
         <div className="card">
           <div className="card-title">💰 Finanse</div>
-          <div style={{ fontSize: 28, fontWeight: 700, color: "#4ade80" }}>
-            {typeof netWorth === "number" ? netWorth.toLocaleString("pl-PL", { style: "currency", currency: "PLN" }) : netWorth}
-          </div>
-          <div className="text-muted text-xs" style={{ marginTop: 4 }}>Net worth</div>
+          {balanceError ? (
+            <span className="badge badge-red">⚠ Serwer niedostępny</span>
+          ) : netWorth != null ? (
+            <>
+              <div style={{ fontSize: 28, fontWeight: 700, color: "#4ade80" }}>
+                {typeof netWorth === "number" ? netWorth.toLocaleString("pl-PL", { style: "currency", currency: "PLN" }) : netWorth}
+              </div>
+              <div className="text-muted text-xs" style={{ marginTop: 4 }}>Net worth</div>
+            </>
+          ) : (
+            <p className="text-muted text-sm">Brak danych</p>
+          )}
         </div>
 
         {/* Tasks */}

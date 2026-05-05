@@ -10,18 +10,21 @@ export default function Emails() {
   const todayList: any[] = Array.isArray(today) ? today : [];
   const recentList: any[] = Array.isArray(recent) ? recent : [];
 
-  // Deduplicate recent vs today
-  const todayIds = new Set(todayList.map((m: any) => m.id ?? m.subject));
-  const olderList = recentList.filter((m: any) => !todayIds.has(m.id ?? m.subject));
+  // Deduplicate recent vs today (fields: id, From, Subject, To, Date)
+  const todayIds = new Set(todayList.map((m: any) => m.id ?? m.Subject));
+  const olderList = recentList.filter((m: any) => !todayIds.has(m.id ?? m.Subject));
 
   function EmailRow({ m }: { m: any }) {
-    const from = (m.from ?? "").replace(/<.*>/, "").trim() || m.from;
-    const date = m.date ? new Date(m.date).toLocaleString("pl-PL", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "";
+    const from = (m.From ?? m.from ?? "").replace(/<[^>]+>/, "").trim();
+    const subject = m.Subject ?? m.subject ?? "(brak tematu)";
+    const date = (m.Date ?? m.date)
+      ? new Date(m.Date ?? m.date).toLocaleString("pl-PL", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })
+      : "";
     return (
       <div className="email-item">
-        <div className="email-subject">{m.subject ?? "(brak tematu)"}</div>
+        <div className="email-subject">{subject}</div>
         <div className="email-meta">
-          <span>Od: {from}</span>
+          <span>Od: {from || "–"}</span>
           {date && <span style={{ marginLeft: 12 }}>📅 {date}</span>}
         </div>
       </div>

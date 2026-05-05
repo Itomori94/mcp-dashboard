@@ -30,6 +30,18 @@ async function initSession(): Promise<void> {
   });
 }
 
+function parseContent(content: Array<{ type: string; text: string }>): unknown {
+  if (!content || content.length === 0) return null;
+  // Multiple items → parse each and return as array
+  if (content.length > 1) {
+    return content.map(c => {
+      try { return JSON.parse(c.text); } catch { return c.text; }
+    });
+  }
+  // Single item → parse and return as-is (object or array)
+  try { return JSON.parse(content[0].text); } catch { return content[0].text; }
+}
+
 export async function callTool<T = unknown>(name: string, args: Record<string, unknown> = {}, retry = true): Promise<T> {
   if (!sessionId) await initSession();
   const id = ++reqId;
@@ -44,9 +56,8 @@ export async function callTool<T = unknown>(name: string, args: Record<string, u
     return callTool(name, args, false);
   }
   const data = JSON.parse(text);
-  if (data.result?.content?.[0]?.text) {
-    try { return JSON.parse(data.result.content[0].text) as T; }
-    catch { return data.result.content[0].text as T; }
+  if (data.result?.content) {
+    return parseContent(data.result.content) as T;
   }
   if (data.error) throw new Error(JSON.stringify(data.error));
   return data as T;
