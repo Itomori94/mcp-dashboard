@@ -1,0 +1,109 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #0f1117;
+  color: #e2e8f0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.dash { padding: 16px; max-width: 900px; margin: 0 auto; }
+.dash-title { font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #f1f5f9; }
+.dash-subtitle { font-size: 11px; color: #64748b; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .05em; }
+
+/* Cards */
+.card {
+  background: #1e2130;
+  border: 1px solid #2d3348;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+.card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Grid */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+/* Stat tiles */
+.stat { text-align: center; padding: 12px 8px; }
+.stat-value { font-size: 24px; font-weight: 700; color: #f1f5f9; }
+.stat-label { font-size: 11px; color: #64748b; margin-top: 2px; }
+
+/* Status badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+.badge-green { background: #14532d40; color: #4ade80; border: 1px solid #166534; }
+.badge-red   { background: #7f1d1d40; color: #f87171; border: 1px solid #991b1b; }
+.badge-yellow{ background: #78350f40; color: #fbbf24; border: 1px solid #92400e; }
+.badge-blue  { background: #1e3a5f40; color: #60a5fa; border: 1px solid #1e40af; }
+.badge-gray  { background: #1e293b;   color: #94a3b8; border: 1px solid #334155; }
+
+/* Table */
+.table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.table th { color: #64748b; font-weight: 600; text-align: left; padding: 6px 8px; border-bottom: 1px solid #2d3348; font-size: 11px; text-transform: uppercase; }
+.table td { padding: 7px 8px; border-bottom: 1px solid #1e2130; }
+.table tr:last-child td { border-bottom: none; }
+.table tr:hover td { background: #252a3a; }
+
+/* Progress bar */
+.progress { height: 6px; background: #2d3348; border-radius: 3px; overflow: hidden; margin-top: 4px; }
+.progress-fill { height: 100%; border-radius: 3px; transition: width .3s; }
+.progress-green { background: #22c55e; }
+.progress-yellow { background: #f59e0b; }
+.progress-red { background: #ef4444; }
+
+/* Row */
+.row { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid #1e2130; }
+.row:last-child { border-bottom: none; }
+
+/* Dot indicator */
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dot-green  { background: #22c55e; }
+.dot-red    { background: #ef4444; }
+.dot-yellow { background: #f59e0b; }
+.dot-gray   { background: #64748b; }
+
+/* Text utils */
+.text-muted  { color: #64748b; }
+.text-sm     { font-size: 12px; }
+.text-xs     { font-size: 11px; }
+.text-green  { color: #4ade80; }
+.text-red    { color: #f87171; }
+.text-yellow { color: #fbbf24; }
+.text-blue   { color: #60a5fa; }
+.font-mono   { font-family: monospace; }
+.truncate    { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Email item */
+.email-item { padding: 10px 0; border-bottom: 1px solid #1e2130; }
+.email-item:last-child { border-bottom: none; }
+.email-subject { font-weight: 600; color: #e2e8f0; margin-bottom: 2px; }
+.email-meta { font-size: 11px; color: #64748b; }
+
+/* Section divider */
+.section-gap { margin-top: 16px; }
+
+/* Photo grid */
+.photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 4px; }
+.photo-thumb { aspect-ratio: 1; background: #2d3348; border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
